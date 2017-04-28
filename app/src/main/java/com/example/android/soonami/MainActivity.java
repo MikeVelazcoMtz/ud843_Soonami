@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** URL to query the USGS dataset for earthquake information */
     private static final String USGS_REQUEST_URL =
-            "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2012-01-01&endtime=2012-12-01&minmagnitude=6";
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2012-01-01&endtime=2012-12-01&minmagnitude=6";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,17 +204,22 @@ public class MainActivity extends AppCompatActivity {
             try {
                 JSONObject baseJsonResponse = new JSONObject(earthquakeJSON);
                 JSONArray featureArray = baseJsonResponse.getJSONArray("features");
+                Log.e("Getting features: OK", "extractFeatureFromJson");
 
                 // If there are results in the features array
                 if (featureArray.length() > 0) {
                     // Extract out the first feature (which is an earthquake)
                     JSONObject firstFeature = featureArray.getJSONObject(0);
                     JSONObject properties = firstFeature.getJSONObject("properties");
-
+                    Log.e("Getting properties: OK", "extractFeatureFromJson");
                     // Extract out the title, time, and tsunami values
                     String title = properties.getString("title");
+                    Log.e("Getting title: OK", "extractFeatureFromJson");
+
                     long time = properties.getLong("time");
+                    Log.e("Getting time: OK", "extractFeatureFromJson");
                     int tsunamiAlert = properties.getInt("tsunami");
+                    Log.e("Getting tsunami: OK", "extractFeatureFromJson");
 
                     // Create a new {@link Event} object
                     return new Event(title, time, tsunamiAlert);
